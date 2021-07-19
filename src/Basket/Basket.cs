@@ -30,6 +30,8 @@ namespace BasketTest
             UpdateTotal();
         }
 
+        public IReadOnlyList<GiftVoucher> Vouchers => _vouchers as IReadOnlyList<GiftVoucher>;
+
         private void UpdateSubTotal()
         {
             SubTotal = _products.Sum(p => p.Price);
