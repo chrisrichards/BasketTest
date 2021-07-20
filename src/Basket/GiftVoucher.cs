@@ -11,5 +11,10 @@
         {
             return Value;
         }
+
+        public override void Visit(IVoucherVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

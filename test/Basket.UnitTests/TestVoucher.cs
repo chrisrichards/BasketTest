@@ -14,5 +14,10 @@
             Applied = true;
             return Value;
         }
+
+        public override void Visit(IVoucherVisitor visitor)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

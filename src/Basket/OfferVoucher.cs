@@ -29,5 +29,10 @@ namespace BasketTest
             var totalPrice = eligibleProducts.Sum(p => p.Price);
             return totalPrice > Value ? Value : totalPrice;
         }
+
+        public override void Visit(IVoucherVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

@@ -14,5 +14,7 @@
         public string Message { get; protected set; }
 
         public abstract decimal Apply(Basket basket);
+
+        public abstract void Visit(IVoucherVisitor visitor);
     }
 }
