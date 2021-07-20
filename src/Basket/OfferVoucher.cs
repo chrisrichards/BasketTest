@@ -27,10 +27,7 @@ namespace BasketTest
             }
 
             var totalPrice = eligibleProducts.Sum(p => p.Price);
-            if (totalPrice > Value)
-                totalPrice -= Value;
-
-            return totalPrice;
+            return totalPrice > Value ? Value : totalPrice;
         }
     }
 }
