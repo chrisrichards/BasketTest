@@ -12,7 +12,7 @@ namespace BasketTest.UnitTests
             var basket = new Basket();
 
             var faker = new Faker();
-            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal());
+            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), faker.Random.Decimal());
 
             var result = sut.Apply(basket);
             
@@ -28,7 +28,7 @@ namespace BasketTest.UnitTests
             var product = new Product(faker.Commerce.ProductName(), faker.Random.Decimal());
             basket.AddProduct(product);
 
-            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), ProductCategory.HeadGear);
+            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), faker.Random.Decimal(0, product.Price), ProductCategory.HeadGear);
 
             var result = sut.Apply(basket);
             
@@ -44,7 +44,7 @@ namespace BasketTest.UnitTests
             var product = new Product(faker.Commerce.ProductName(), faker.Random.Decimal());
             basket.AddProduct(product);
 
-            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), ProductCategory.HeadGear);
+            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), faker.Random.Decimal(0, product.Price), ProductCategory.HeadGear);
 
             sut.Apply(basket);
             
@@ -60,7 +60,7 @@ namespace BasketTest.UnitTests
             var product = new Product(faker.Commerce.ProductName(), faker.Random.Decimal(), ProductCategory.HeadGear);
             basket.AddProduct(product);
 
-            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(0, product.Price), ProductCategory.HeadGear);
+            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(0, product.Price), faker.Random.Decimal(0, product.Price), ProductCategory.HeadGear);
 
             var result = sut.Apply(basket);
             
@@ -77,11 +77,28 @@ namespace BasketTest.UnitTests
             var product = new Product(faker.Commerce.ProductName(), faker.Random.Decimal(), ProductCategory.HeadGear);
             basket.AddProduct(product);
 
-            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(product.Price), ProductCategory.HeadGear);
+            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(product.Price), faker.Random.Decimal(0, product.Price), ProductCategory.HeadGear);
 
             var result = sut.Apply(basket);
             
             result.ShouldBe(product.Price);
+        }
+
+
+        [Fact]
+        public void Apply_DoesNotApplyVoucherWhenBasketSubTotalIsLessThanThreshold()
+        {
+            var faker = new Faker();
+
+            var basket = new Basket();
+            var product = new Product(faker.Commerce.ProductName(), faker.Random.Decimal(), ProductCategory.HeadGear);
+            basket.AddProduct(product);
+
+            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), faker.Random.Decimal(product.Price), ProductCategory.HeadGear);
+
+            var result = sut.Apply(basket);
+            
+            result.ShouldBe(0);
         }
     }
 }

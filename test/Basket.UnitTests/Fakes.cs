@@ -27,6 +27,7 @@ namespace BasketTest.UnitTests
                 .CustomInstantiator(f =>
                     new OfferVoucher(f.Commerce.Ean13(),
                         f.Random.Decimal(),
+                        f.Random.Decimal(100),
                         f.PickRandom<ProductCategory>()));
         }
     }

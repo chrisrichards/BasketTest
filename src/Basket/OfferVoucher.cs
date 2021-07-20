@@ -4,12 +4,14 @@ namespace BasketTest
 {
     public class OfferVoucher : Voucher
     {
-        public OfferVoucher(string code, decimal value, ProductCategory? category = null)
+        public OfferVoucher(string code, decimal value, decimal threshold, ProductCategory? category = null)
             : base(code, value)
         {
+            Threshold = threshold;
             Category = category;
         }
 
+        public decimal Threshold { get; }
         public ProductCategory? Category { get; }
 
         public override decimal Apply(Basket basket)
@@ -17,6 +19,13 @@ namespace BasketTest
             if (Category == null)
             {
                 return Value;
+            }
+
+            if (basket.SubTotal < Threshold)
+            {
+                var difference = Threshold - basket.SubTotal;
+                Message = $"You have not reached the spend threshold for Offer Voucher {Code}. Spend another {difference:C} to receive {Value:C} discount from your basket total";
+                return 0;
             }
 
             var eligibleProducts = basket.Products.Where(p => p.Category == Category).ToList();

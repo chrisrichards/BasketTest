@@ -28,7 +28,7 @@ namespace BasketTest
                 stringBuilder.Append($"{offerVoucher.Category} in ");
             }
 
-            stringBuilder.Append($"baskets Offer Voucher {offerVoucher.Code} applied");
+            stringBuilder.Append($"baskets over {offerVoucher.Threshold:C} Offer Voucher {offerVoucher.Code} applied");
 
             Description = stringBuilder.ToString();
         }

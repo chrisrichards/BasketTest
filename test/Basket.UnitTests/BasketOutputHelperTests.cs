@@ -38,7 +38,7 @@ namespace BasketTest.UnitTests
         }
 
         [Fact]
-        public void BasketOutputHelper_ToString_WritesGiftVoucherLine()
+        public void BasketOutputHelper_WriteVoucherLines_WritesGiftVoucherLine()
         {
             var basket = new Basket();
 
@@ -54,14 +54,13 @@ namespace BasketTest.UnitTests
             result.ShouldBe($"1 x {giftVoucher.Value:C} Gift Voucher {giftVoucher.Code} applied{Environment.NewLine}");
         }
 
-
         [Fact]
-        public void BasketOutputHelper_ToString_WritesOfferVoucherLineWithoutProductCategory()
+        public void BasketOutputHelper_WriteVoucherLines_WritesOfferVoucherLineWithoutProductCategory()
         {
             var basket = new Basket();
 
             var faker = new Faker();
-            var offerVoucher = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal());
+            var offerVoucher = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), faker.Random.Decimal());
             basket.AddVoucher(offerVoucher);
 
             var sut = new BasketOutputHelper(basket);
@@ -70,7 +69,24 @@ namespace BasketTest.UnitTests
 
             var result = stringBuilder.ToString();
             result.ShouldNotBeNullOrEmpty();
-            result.ShouldBe($"1 x {offerVoucher.Value:C} off baskets Offer Voucher {offerVoucher.Code} applied{Environment.NewLine}");
+            result.ShouldBe($"1 x {offerVoucher.Value:C} off baskets over {offerVoucher.Threshold:C} Offer Voucher {offerVoucher.Code} applied{Environment.NewLine}");
+        }
+
+        [Fact]
+        public void BasketOutputHelper_WriteVoucherLines_WritesOfferVoucherLineWithProductCategory()
+        {
+            var basket = new Basket();
+
+            var offerVoucher = Fakes.OfferVoucher().Generate();
+            basket.AddVoucher(offerVoucher);
+
+            var sut = new BasketOutputHelper(basket);
+            var stringBuilder = new StringBuilder();
+            sut.WriteVoucherLines(stringBuilder);
+
+            var result = stringBuilder.ToString();
+            result.ShouldNotBeNullOrEmpty();
+            result.ShouldBe($"1 x {offerVoucher.Value:C} off {offerVoucher.Category} in baskets over {offerVoucher.Threshold:C} Offer Voucher {offerVoucher.Code} applied{Environment.NewLine}");
         }
     }
 }
