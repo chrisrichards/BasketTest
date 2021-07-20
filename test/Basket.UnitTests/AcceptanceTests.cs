@@ -1,10 +1,16 @@
-﻿using Shouldly;
+﻿using System.Threading;
+using Shouldly;
 using Xunit;
 
 namespace BasketTest.UnitTests
 {
     public class AcceptanceTests
     {
+        public AcceptanceTests()
+        {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("en-gb");
+        }
+
         [Fact]
         public void Basket1()
         {
