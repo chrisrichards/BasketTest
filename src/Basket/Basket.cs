@@ -32,7 +32,8 @@ namespace BasketTest
 
         private string BuildMessage()
         {
-            return string.Join(". ", _vouchers.Select(v => v.Message));
+            var messages = _vouchers.Select(v => v.Message).Where(m => !string.IsNullOrWhiteSpace(m));
+            return string.Join(". ", messages);
         }
 
         private void UpdateTotals()

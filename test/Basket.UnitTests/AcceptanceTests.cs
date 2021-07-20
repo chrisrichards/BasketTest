@@ -105,5 +105,34 @@ Sub Total: £54.50
 Total: £51.00
 ");
         }
+
+        [Fact]
+        public void Basket5()
+        {
+            var basket = new Basket();
+
+            var gloves = new Product("Gloves", 25.00m);
+            var jumper = new Product("Jumper", 26.00m);
+
+            basket.AddProduct(gloves);
+            basket.AddProduct(jumper);
+
+            var giftVoucher = new GiftVoucher("XXX-XXX", 5.00m);
+            basket.AddVoucher(giftVoucher);
+
+            var offerVoucher = new OfferVoucher("YYY-YYY", 5.00m, 50.00m);
+            basket.AddVoucher(offerVoucher);
+
+            var outputHelper = new BasketOutputHelper(basket);
+            var result = outputHelper.ToString();
+
+            result.ShouldBe(@"1 Gloves @ £25.00
+1 Jumper @ £26.00
+Sub Total: £51.00
+1 x £5.00 Gift Voucher XXX-XXX applied
+1 x £5.00 off baskets over £50.00 Offer Voucher YYY-YYY applied
+Total: £41.00
+");
+        }
     }
 }
