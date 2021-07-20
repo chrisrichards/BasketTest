@@ -9,10 +9,12 @@ namespace BasketTest.UnitTests
     public class BasketOutputHelperTests
     {
         [Fact]
-        public void BasketOutputHelper_WriteProductLines_WritesProductLine()
+        public void BasketOutputHelper_WriteProductLines_WritesProductLineWithoutProductCategory()
         {
+            var faker = new Faker();
+
             var basket = new Basket();
-            var product = Fakes.Product().Generate();
+            var product = new Product(faker.Commerce.Ean13(), faker.Random.Decimal());
             basket.AddProduct(product);
 
             var sut = new BasketOutputHelper(basket);
@@ -21,6 +23,23 @@ namespace BasketTest.UnitTests
 
             var result = stringBuilder.ToString();
             result.ShouldBe($"1 {product.Name} @ {product.Price:C}{Environment.NewLine}");
+        }
+
+        [Fact]
+        public void BasketOutputHelper_WriteProductLines_WritesProductLineWithProductCategory()
+        {
+            var faker = new Faker();
+
+            var basket = new Basket();
+            var product = new Product(faker.Commerce.Ean13(), faker.Random.Decimal(), ProductCategory.HeadGear);
+            basket.AddProduct(product);
+
+            var sut = new BasketOutputHelper(basket);
+            var stringBuilder = new StringBuilder();
+            sut.WriteProductLines(stringBuilder);
+
+            var result = stringBuilder.ToString();
+            result.ShouldBe($"1 {product.Name} (Head Gear Category of Product) @ {product.Price:C}{Environment.NewLine}");
         }
 
         [Fact]
