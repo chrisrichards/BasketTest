@@ -28,14 +28,6 @@ namespace BasketTest
 
         public IReadOnlyList<Voucher> Vouchers => _vouchers as IReadOnlyList<Voucher>;
 
-        public string Message => BuildMessage();
-
-        private string BuildMessage()
-        {
-            var messages = _vouchers.Select(v => v.Message).Where(m => !string.IsNullOrWhiteSpace(m));
-            return string.Join(". ", messages);
-        }
-
         private void UpdateTotals()
         {
             SubTotal = _products.Sum(p => p.Price);

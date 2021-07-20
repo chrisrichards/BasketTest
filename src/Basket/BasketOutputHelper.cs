@@ -67,9 +67,15 @@ namespace BasketTest
 
         public void WriteMessage(StringBuilder stringBuilder)
         {
-            if (!string.IsNullOrWhiteSpace(_basket.Message))
+            var messages = _basket.Vouchers
+                .Select(v => v.Message)
+                .Where(m => !string.IsNullOrWhiteSpace(m))
+                .ToList();
+
+            if (messages.Any())
             {
-                stringBuilder.AppendLine($"Message: {_basket.Message}");
+                var message = string.Join(". ", messages);
+                stringBuilder.AppendLine($"Message: {message}");
             }
         }
     }
