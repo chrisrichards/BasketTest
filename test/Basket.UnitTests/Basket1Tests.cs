@@ -25,13 +25,19 @@ namespace BasketTest.UnitTests
         }
 
         [Fact]
-        public void Basket_SubTotal_ShouldBeCorrectWithTwoProducts()
+        public void Basket_VouchersCount_ShouldBeCorrect()
+        {
+            _sut.Vouchers.Count.ShouldBe(0);
+        }
+
+        [Fact]
+        public void Basket_SubTotal_ShouldBeCorrect()
         {
             _sut.SubTotal.ShouldBe(58.15m);
         }
 
         [Fact]
-        public void Basket_Total_ShouldBeCorrectWithTwoProducts()
+        public void Basket_Total_ShouldBeCorrect()
         {
             _sut.Total.ShouldBe(58.15m);
         }
