@@ -17,7 +17,6 @@ namespace BasketTest
             if (Category == null)
             {
                 Applied = true;
-                Message = $"1 x {Value:C} Gift Voucher {Code} applied";
                 return Value;
             }
 
@@ -25,14 +24,15 @@ namespace BasketTest
             if (!eligibleProducts.Any())
             {
                 Applied = false;
-                Message = $"1 x {Value:C} Gift Voucher {Code} applied";
+                Message = $"There are no products in your basket applicable to Offer Voucher {Code}";
                 return 0;
             }
 
             var totalPrice = eligibleProducts.Sum(p => p.Price);
             if (totalPrice > Value)
-                return totalPrice - Value;
+                totalPrice -= Value;
 
+            Applied = true;
             return totalPrice;
         }
     }

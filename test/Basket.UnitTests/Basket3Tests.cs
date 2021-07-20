@@ -34,6 +34,12 @@ namespace BasketTest.UnitTests
         }
 
         [Fact]
+        public void Basket_Message_ShouldBeCorrect()
+        {
+            _sut.Message.ShouldBe("There are no products in your basket applicable to Offer Voucher YYY-YYY");
+        }
+
+        [Fact]
         public void Basket_SubTotal_ShouldBeCorrect()
         {
             _sut.SubTotal.ShouldBe(51.00m);

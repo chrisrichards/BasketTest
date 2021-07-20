@@ -31,6 +31,12 @@ namespace BasketTest.UnitTests
         }
 
         [Fact]
+        public void Basket_Message_ShouldBeEmpty()
+        {
+            _sut.Message.ShouldBeEmpty();
+        }
+
+        [Fact]
         public void Basket_SubTotal_ShouldBeCorrect()
         {
             _sut.SubTotal.ShouldBe(58.15m);

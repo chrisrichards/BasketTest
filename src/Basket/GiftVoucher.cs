@@ -9,6 +9,7 @@
 
         public override decimal Apply(Basket basket)
         {
+            Applied = true;
             return Value;
         }
     }
