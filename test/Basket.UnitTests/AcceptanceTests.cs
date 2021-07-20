@@ -166,5 +166,26 @@ Total: £55.00
 Message: You have not reached the spend threshold for Offer Voucher YYY-YYY. Spend another £25.01 to receive £5.00 discount from your basket total
 ");
         }
+
+        [Fact]
+        public void Basket7()
+        {
+            var basket = new Basket();
+
+            var gloves = new Product("Gloves", 25.00m);
+            basket.AddProduct(gloves);
+            
+            var giftVoucher = new GiftVoucher("XXX-XXX", 30.00m);
+            basket.AddVoucher(giftVoucher);
+
+            var outputHelper = new BasketOutputHelper(basket);
+            var result = outputHelper.ToString();
+
+            result.ShouldBe(@"1 Gloves @ £25.00
+Sub Total: £25.00
+1 x £30.00 Gift Voucher XXX-XXX applied
+Total: £0.00
+");
+        }
     }
 }
