@@ -32,20 +32,10 @@ namespace BasketTest
                 stringBuilder.Append($"1 {product.Name} ");
                 if (product.Category != null)
                 {
-                    var category = ConvertToString(product.Category);
-                    stringBuilder.Append($"({category} Category of Product) ");
+                    stringBuilder.Append($"({product.Category?.ConvertToString()} Category of Product) ");
                 }
                 stringBuilder.AppendLine($"@ {product.Price:C}");
             }
-        }
-
-        private string ConvertToString(ProductCategory? productCategory)
-        {
-            return productCategory switch
-            {
-                ProductCategory.HeadGear => "Head Gear",
-                _ => string.Empty
-            };
         }
 
         public void WriteSubTotal(StringBuilder stringBuilder)

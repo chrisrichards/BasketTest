@@ -25,7 +25,7 @@ namespace BasketTest
 
             if (offerVoucher.Category != null)
             {
-                stringBuilder.Append($"{offerVoucher.Category} in ");
+                stringBuilder.Append($"{offerVoucher.Category?.ConvertToString()} in ");
             }
 
             stringBuilder.Append($"baskets over {offerVoucher.Threshold:C} Offer Voucher {offerVoucher.Code} applied");

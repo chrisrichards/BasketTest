@@ -105,7 +105,7 @@ namespace BasketTest.UnitTests
 
             var result = stringBuilder.ToString();
             result.ShouldNotBeNullOrEmpty();
-            result.ShouldBe($"1 x {offerVoucher.Value:C} off {offerVoucher.Category} in baskets over {offerVoucher.Threshold:C} Offer Voucher {offerVoucher.Code} applied{Environment.NewLine}");
+            result.ShouldBe($"1 x {offerVoucher.Value:C} off {offerVoucher.Category?.ConvertToString()} in baskets over {offerVoucher.Threshold:C} Offer Voucher {offerVoucher.Code} applied{Environment.NewLine}");
         }
     }
 }
