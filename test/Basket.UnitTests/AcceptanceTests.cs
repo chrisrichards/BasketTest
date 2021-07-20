@@ -140,5 +140,31 @@ Sub Total: £51.00
 Total: £41.00
 ");
         }
+
+        [Fact]
+        public void Basket6()
+        {
+            var basket = new Basket();
+
+            var gloves = new Product("Gloves", 25.00m);
+            var giftVoucher = new GiftVoucherProduct("£30 Gift Voucher", 30.00m);
+
+            basket.AddProduct(gloves);
+            basket.AddProduct(giftVoucher);
+            
+            var offerVoucher = new OfferVoucher("YYY-YYY", 5.00m, 50.00m);
+            basket.AddVoucher(offerVoucher);
+
+            var outputHelper = new BasketOutputHelper(basket);
+            var result = outputHelper.ToString();
+
+            result.ShouldBe(@"1 Gloves @ £25.00
+1 £30 Gift Voucher @ £30.00
+Sub Total: £55.00
+1 x £5.00 off baskets over £50.00 Offer Voucher YYY-YYY applied
+Total: £55.00
+Message: You have not reached the spend threshold for Offer Voucher YYY-YYY. Spend another £25.01 to receive £5.00 discount from your basket total
+");
+        }
     }
 }

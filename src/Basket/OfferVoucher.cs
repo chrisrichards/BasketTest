@@ -16,16 +16,20 @@ namespace BasketTest
 
         public override decimal Apply(Basket basket)
         {
+            var subTotal = basket.Products
+                .Where(p => !p.IsGiftVoucher)
+                .Sum(p => p.Price);
+
+            if (subTotal < Threshold)
+            {
+                var difference = Threshold - subTotal + 0.01m;
+                Message = $"You have not reached the spend threshold for Offer Voucher {Code}. Spend another {difference:C} to receive {Value:C} discount from your basket total";
+                return 0;
+            }
+
             if (Category == null)
             {
                 return Value;
-            }
-
-            if (basket.SubTotal < Threshold)
-            {
-                var difference = Threshold - basket.SubTotal;
-                Message = $"You have not reached the spend threshold for Offer Voucher {Code}. Spend another {difference:C} to receive {Value:C} discount from your basket total";
-                return 0;
             }
 
             var eligibleProducts = basket.Products.Where(p => p.Category == Category).ToList();

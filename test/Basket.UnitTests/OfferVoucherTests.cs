@@ -9,10 +9,13 @@ namespace BasketTest.UnitTests
         [Fact]
         public void Apply_WithNullCategory_ReturnsValue()
         {
-            var basket = new Basket();
-
             var faker = new Faker();
-            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), faker.Random.Decimal());
+
+            var basket = new Basket();
+            var product = new Product(faker.Commerce.ProductName(), faker.Random.Decimal());
+            basket.AddProduct(product);
+
+            var sut = new OfferVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(), faker.Random.Decimal(0, product.Price));
 
             var result = sut.Apply(basket);
             
