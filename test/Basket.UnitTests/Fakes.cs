@@ -4,25 +4,30 @@ namespace BasketTest.UnitTests
 {
     public static class Fakes
     {
-        public static Product Product(this Faker faker)
+        public static Faker<Product> Product()
         {
-            return new(
-                faker.Commerce.ProductName(), 
-                faker.Random.Decimal(),
-                faker.PickRandom<ProductCategory>());
+            return new Faker<Product>()
+                .CustomInstantiator(f =>
+                    new Product(f.Commerce.ProductName(),
+                        f.Random.Decimal(),
+                        f.PickRandom<ProductCategory>()));
         }
 
-        public static GiftVoucher GiftVoucher(this Faker faker)
+        public static Faker<GiftVoucher> GiftVoucher()
         {
-            return new(faker.Commerce.Ean13(), 
-                faker.Random.Decimal());
+            return new Faker<GiftVoucher>()
+                .CustomInstantiator(f =>
+                    new GiftVoucher(f.Commerce.Ean13(), 
+                        f.Random.Decimal()));
         }
 
-        public static OfferVoucher OfferVoucher(this Faker faker)
+        public static Faker<OfferVoucher> OfferVoucher()
         {
-            return new(faker.Commerce.Ean13(), 
-                faker.Random.Decimal(),
-                faker.PickRandom<ProductCategory>());
+            return new Faker<OfferVoucher>()
+                .CustomInstantiator(f =>
+                    new OfferVoucher(f.Commerce.Ean13(),
+                        f.Random.Decimal(),
+                        f.PickRandom<ProductCategory>()));
         }
     }
 }

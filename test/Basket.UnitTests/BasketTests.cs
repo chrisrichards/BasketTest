@@ -1,4 +1,4 @@
-using System.Formats.Asn1;
+using System.Linq;
 using Bogus;
 using Shouldly;
 using Xunit;
@@ -10,10 +10,8 @@ namespace BasketTest.UnitTests
         [Fact]
         public void Basket_AddProduct_ShouldAddProduct()
         {
-            var faker = new Faker();
-
             var sut = new Basket();
-            var product = faker.Product();
+            var product = Fakes.Product().Generate();
 
             sut.AddProduct(product);
 
@@ -26,12 +24,40 @@ namespace BasketTest.UnitTests
         }
 
         [Fact]
+        public void Basket_AddProduct_ShouldUpdateSubTotal()
+        {
+            var sut = new Basket();
+            var products = Fakes.Product().Generate(5);
+
+            foreach (var product in products)
+            {
+                sut.AddProduct(product);
+            }
+
+            var expectedResult = products.Sum(p => p.Price);
+            sut.SubTotal.ShouldBe(expectedResult);
+        }
+
+        [Fact]
+        public void Basket_AddProduct_ShouldUpdateTotal()
+        {
+            var sut = new Basket();
+            var products = Fakes.Product().Generate(5);
+
+            foreach (var product in products)
+            {
+                sut.AddProduct(product);
+            }
+
+            var expectedResult = products.Sum(p => p.Price);
+            sut.SubTotal.ShouldBe(expectedResult);
+        }
+
+        [Fact]
         public void Basket_AddVoucher_ShouldAddGiftVoucher()
         {
-            var faker = new Faker();
-
             var sut = new Basket();
-            var voucher = faker.GiftVoucher();
+            var voucher = Fakes.GiftVoucher().Generate();
 
             sut.AddVoucher(voucher);
 
@@ -43,14 +69,11 @@ namespace BasketTest.UnitTests
             result.Value.ShouldBe(voucher.Value);
         }
 
-
         [Fact]
         public void Basket_AddVoucher_ShouldAddOfferVoucher()
         {
-            var faker = new Faker();
-
             var sut = new Basket();
-            var voucher = faker.OfferVoucher();
+            var voucher = Fakes.OfferVoucher().Generate();
 
             sut.AddVoucher(voucher);
 
@@ -63,6 +86,51 @@ namespace BasketTest.UnitTests
             result.ShouldBeOfType<OfferVoucher>();
             var voucherResult = (OfferVoucher)result;
             voucherResult.Category.ShouldBe(voucher.Category);
+        }
+
+        [Fact]
+        public void Basket_AddVoucher_ShouldApplyVoucher()
+        {
+            var sut = new Basket();
+
+            var product = Fakes.Product().Generate();
+            sut.AddProduct(product);
+
+            var faker = new Faker();
+            var voucher = new TestVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(0, product.Price));
+            sut.AddVoucher(voucher);
+
+            voucher.Applied.ShouldBeTrue();
+        }
+
+        [Fact]
+        public void Basket_AddVoucher_ShouldNotUpdateSubTotal()
+        {
+            var sut = new Basket();
+
+            var product = Fakes.Product().Generate();
+            sut.AddProduct(product);
+
+            var faker = new Faker();
+            var voucher = new TestVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(0, product.Price));
+            sut.AddVoucher(voucher);
+
+            sut.SubTotal.ShouldBe(product.Price);
+        }
+
+        [Fact]
+        public void Basket_AddVoucher_ShouldUpdateTotal()
+        {
+            var sut = new Basket();
+
+            var product = Fakes.Product().Generate();
+            sut.AddProduct(product);
+
+            var faker = new Faker();
+            var voucher = new TestVoucher(faker.Commerce.Ean13(), faker.Random.Decimal(0, product.Price));
+            sut.AddVoucher(voucher);
+
+            sut.Total.ShouldBe(product.Price - voucher.Value);
         }
     }
 }
