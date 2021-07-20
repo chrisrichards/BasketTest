@@ -17,8 +17,8 @@ namespace BasketTest.UnitTests
             _sut.AddProduct(gloves);
             _sut.AddProduct(jumper);
 
-            var giftVoucher = new GiftVoucher("XXX-XXX", 5.00m, ProductCategory.HeadGear);
-            _sut.AddVoucher(giftVoucher);
+            var offerVoucher = new OfferVoucher("YYY-YYY", 5.00m, ProductCategory.HeadGear);
+            _sut.AddVoucher(offerVoucher);
         }
 
         [Fact]

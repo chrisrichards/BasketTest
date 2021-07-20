@@ -6,7 +6,7 @@ namespace BasketTest
     public class Basket
     {
         private readonly IList<Product> _products = new List<Product>();
-        private readonly IList<GiftVoucher> _vouchers = new List<GiftVoucher>();
+        private readonly IList<Voucher> _vouchers = new List<Voucher>();
 
         public decimal SubTotal { get; private set; }
 
@@ -20,13 +20,13 @@ namespace BasketTest
 
         public IReadOnlyList<Product> Products => _products as IReadOnlyList<Product>;
 
-        public void AddVoucher(GiftVoucher voucher)
+        public void AddVoucher(Voucher voucher)
         {
             _vouchers.Add(voucher);
             UpdateTotals();
         }
 
-        public IReadOnlyList<GiftVoucher> Vouchers => _vouchers as IReadOnlyList<GiftVoucher>;
+        public IReadOnlyList<Voucher> Vouchers => _vouchers as IReadOnlyList<Voucher>;
 
         private void UpdateTotals()
         {

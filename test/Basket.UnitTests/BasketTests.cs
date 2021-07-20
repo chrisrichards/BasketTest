@@ -1,3 +1,4 @@
+using System.Formats.Asn1;
 using Bogus;
 using Shouldly;
 using Xunit;
@@ -37,9 +38,31 @@ namespace BasketTest.UnitTests
             sut.Vouchers.Count.ShouldBe(1);
 
             var result = sut.Vouchers[0];
+            result.ShouldBeOfType<GiftVoucher>();
             result.Code.ShouldBe(voucher.Code);
             result.Value.ShouldBe(voucher.Value);
-            result.Category.ShouldBe(voucher.Category);
+        }
+
+
+        [Fact]
+        public void Basket_AddVoucher_ShouldAddOfferVoucher()
+        {
+            var faker = new Faker();
+
+            var sut = new Basket();
+            var voucher = faker.OfferVoucher();
+
+            sut.AddVoucher(voucher);
+
+            sut.Vouchers.Count.ShouldBe(1);
+
+            var result = sut.Vouchers[0];
+            result.Code.ShouldBe(voucher.Code);
+            result.Value.ShouldBe(voucher.Value);
+
+            result.ShouldBeOfType<OfferVoucher>();
+            var voucherResult = (OfferVoucher)result;
+            voucherResult.Category.ShouldBe(voucher.Category);
         }
     }
 }

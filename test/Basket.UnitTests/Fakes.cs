@@ -15,6 +15,12 @@ namespace BasketTest.UnitTests
         public static GiftVoucher GiftVoucher(this Faker faker)
         {
             return new(faker.Commerce.Ean13(), 
+                faker.Random.Decimal());
+        }
+
+        public static OfferVoucher OfferVoucher(this Faker faker)
+        {
+            return new(faker.Commerce.Ean13(), 
                 faker.Random.Decimal(),
                 faker.PickRandom<ProductCategory>());
         }
