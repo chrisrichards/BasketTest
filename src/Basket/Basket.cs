@@ -15,9 +15,7 @@ namespace BasketTest
         public void AddProduct(Product product)
         {
             _products.Add(product);
-
-            UpdateSubTotal();
-            UpdateTotal();
+            UpdateTotals();
         }
 
         public IReadOnlyList<Product> Products => _products as IReadOnlyList<Product>;
@@ -25,29 +23,28 @@ namespace BasketTest
         public void AddVoucher(GiftVoucher voucher)
         {
             _vouchers.Add(voucher);
-
-            UpdateSubTotal();
-            UpdateTotal();
+            UpdateTotals();
         }
 
         public IReadOnlyList<GiftVoucher> Vouchers => _vouchers as IReadOnlyList<GiftVoucher>;
 
-        private void UpdateSubTotal()
+        private void UpdateTotals()
         {
             SubTotal = _products.Sum(p => p.Price);
-        }
 
-        private void UpdateTotal()
-        {
-            var total = _products.Sum(p => p.Price);
-            var discount = _vouchers.Sum(v => v.Value);
+            var discount = ApplyVouchers();
 
-            total -= discount;
+            var total = SubTotal - discount;
 
             if (total < 0) 
                 total = 0;
 
             Total = total;
+        }
+
+        private decimal ApplyVouchers()
+        {
+            return _vouchers.Sum(v => v.Apply(this));
         }
     }
 }

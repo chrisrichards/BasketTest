@@ -1,4 +1,6 @@
-﻿namespace BasketTest
+﻿using System.Linq;
+
+namespace BasketTest
 {
     public class GiftVoucher
     {
@@ -9,8 +11,24 @@
             Category = category;
         }
 
-        public string Code { get; private set; }
-        public decimal Value { get; private set; }
+        public string Code { get; }
+        public decimal Value { get; }
         public ProductCategory? Category { get; }
+
+        public decimal Apply(Basket basket)
+        {
+            if (Category == null)
+                return Value;
+
+            var eligibleProducts = basket.Products.Where(p => p.Category == Category).ToList();
+            if (!eligibleProducts.Any())
+                return 0;
+
+            var totalPrice = eligibleProducts.Sum(p => p.Price);
+            if (totalPrice > Value)
+                return totalPrice - Value;
+
+            return totalPrice;
+        }
     }
 }
